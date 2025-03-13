@@ -1,5 +1,6 @@
 # Store-API
 ## UML
-![UML](https://github.com/user-attachments/assets/480c3079-6da5-4929-9089-de4116c9b7ca)
+![UML](https://github.com/user-attachments/assets/ea2b0645-4447-4cd4-bbd7-a83a645b052b)
+
 ## ERD
-![ERD](https://github.com/user-attachments/assets/71fb829c-4d09-4078-99ee-185110e56856)
+![ERD](https://github.com/user-attachments/assets/2787a7cb-0d7a-4c31-96e0-ea1d34f967c3)

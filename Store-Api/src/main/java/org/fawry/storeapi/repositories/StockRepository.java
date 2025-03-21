@@ -15,4 +15,12 @@ public interface StockRepository extends JpaRepository<Stock,Long> {
     Page<Stock> findByStoreId(Long storeId, Pageable pageable);
     @Query(value = "SELECT COALESCE(SUM(quantity), 0) FROM stock WHERE store_id = :storeId", nativeQuery = true)
     int getTotalStockCountByStoreId(@Param("storeId") Long storeId);
+
+    @Query(value = """
+    SELECT COUNT(*) > 0 FROM stock st
+    WHERE st.product_id = :productId
+    AND st.quantity >= :quantity
+    """, nativeQuery = true)
+    boolean isProductAvailableInAnyStore(@Param("productId") Long productId,
+                                         @Param("quantity") int quantity);
 }

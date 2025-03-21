@@ -3,6 +3,9 @@ package org.fawry.storeapi.services.store;
 import org.fawry.storeapi.dtos.StockDTO;
 import org.fawry.storeapi.dtos.StoreDTO;
 import org.fawry.storeapi.dtos.StoreResponseDTO;
+import org.fawry.storeapi.dtos.StoreWithDistanceDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -17,13 +20,13 @@ public interface StoreService {
 
     StoreDTO findStoreByName(String name);
 
-    List<StoreResponseDTO> findNearestStores(double longitude, double latitude, double radius, int page, int size);
-
+    Page<StoreWithDistanceDTO> findNearestStores(double longitude, double latitude, double radius, Pageable pageable);
+    Page<StoreWithDistanceDTO> findNearestStoresWithProduct(Long productId, double longitude, double latitude, double radius, Pageable pageable);
     void deleteStoreById(Long id);
 
     boolean storeExists(Long id);
 
-    public List<StockDTO> getAllStocksForStore(Long id, int page, int size);
+    List<StockDTO> getAllStocksForStore(Long id, int page, int size);
 
     int getTotalStockCount(Long storeId);
 }

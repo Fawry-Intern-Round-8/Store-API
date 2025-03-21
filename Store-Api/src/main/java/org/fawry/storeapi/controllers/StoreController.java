@@ -4,12 +4,13 @@ import org.fawry.storeapi.dtos.*;
 import org.fawry.storeapi.services.store.StoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/stores")
+@RequestMapping("/api/stores")
 public class StoreController {
 
     private final StoreService storeService;
@@ -62,10 +63,21 @@ public class StoreController {
     }
 
     @GetMapping("/nearest")
-    public List<StoreResponseDTO> getNearestStores(@RequestParam double longitude,
-                                                       @RequestParam double latitude,
-                                                       @RequestParam double radius) {
-        return storeService.findNearestStores(longitude, latitude, radius, 0,5);
+    public Page<StoreWithDistanceDTO> getNearestStores(
+            @RequestParam double longitude,
+            @RequestParam double latitude,
+            @RequestParam double radius,
+            Pageable pageable) {
+        return storeService.findNearestStores(longitude, latitude, radius, pageable);
+    }
+    @GetMapping("/nearest-withProduct")
+    public Page<StoreWithDistanceDTO> getNearestStores(
+            @RequestParam Long productId,
+            @RequestParam double longitude,
+            @RequestParam double latitude,
+            @RequestParam double radius,
+            Pageable pageable) {
+        return storeService.findNearestStoresWithProduct(productId, longitude, latitude, radius, pageable);
     }
 
 }

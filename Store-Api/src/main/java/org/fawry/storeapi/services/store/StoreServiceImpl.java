@@ -3,6 +3,7 @@ package org.fawry.storeapi.services.store;
 import org.fawry.storeapi.dtos.StockDTO;
 import org.fawry.storeapi.dtos.StoreDTO;
 import org.fawry.storeapi.dtos.StoreResponseDTO;
+import org.fawry.storeapi.dtos.StoreWithDistanceDTO;
 import org.fawry.storeapi.entities.Stock;
 import org.fawry.storeapi.entities.Store;
 import org.fawry.storeapi.mappers.StockMapper;
@@ -105,12 +106,25 @@ public class StoreServiceImpl implements StoreService {
         return storeMapper.toDTO(storeRepository.findStoreByName(name));
     }
 
-    @Override
-    public List<StoreResponseDTO> findNearestStores(double longitude, double latitude, double radius, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<StoreResponseDTO> storePage = storeRepository.findNearestStores(longitude, latitude, radius, pageable);
-        return storePage.getContent();
+    public Page<StoreWithDistanceDTO> findNearestStores(double longitude, double latitude, double radius, Pageable pageable) {
+        return storeRepository.findNearestStores(longitude, latitude, radius, pageable)
+                .map(obj -> new StoreWithDistanceDTO(
+                        (Long) obj[0],
+                        (String) obj[1],
+                        (String) obj[2],
+                        (Double) obj[3]
+                ));
     }
+    public Page<StoreWithDistanceDTO> findNearestStoresWithProduct(Long productId, double longitude, double latitude, double radius, Pageable pageable) {
+        return storeRepository.findNearestStoresWithProduct(productId,longitude, latitude, radius, pageable)
+                .map(obj -> new StoreWithDistanceDTO(
+                        (Long) obj[0],
+                        (String) obj[1],
+                        (String) obj[2],
+                        (Double) obj[3]
+                ));
+    }
+
 
     @Override
     public void deleteStoreById(Long id) {

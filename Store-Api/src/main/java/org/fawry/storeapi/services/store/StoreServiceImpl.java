@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class StoreServiceImpl implements StoreService {
@@ -74,6 +76,20 @@ public class StoreServiceImpl implements StoreService {
                 .latitude(updatedStore.getLocation().getY())
                 .build();
 
+    }
+    public List<StoreResponseDTO> getAllStores() {
+        Iterable<Store> stores = storeRepository.findAll();
+        // Convert Iterable to Stream
+        return StreamSupport.stream(stores.spliterator(), false)
+                .map(store -> StoreResponseDTO.builder()
+                        .id(store.getId())
+                        .name(store.getName())
+                        .address(store.getAddress())
+                        .longitude(store.getLocation().getX())
+                        .latitude(store.getLocation().getY())
+                        .build()
+                )
+                .collect(Collectors.toList());
     }
 
     @Override

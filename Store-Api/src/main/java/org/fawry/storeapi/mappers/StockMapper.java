@@ -7,9 +7,6 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface StockMapper {
-    @Mapping(source = "store.id", target = "storeId") // Map Store ID to storeId
     StockDTO toDTO(Stock stock);
-
-    @Mapping(source = "storeId", target = "store.id") // Map storeId back to Store (Only if necessary)
     Stock toEntity(StockDTO stockDTO);
 }

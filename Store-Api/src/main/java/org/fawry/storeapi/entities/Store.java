@@ -3,6 +3,7 @@ package org.fawry.storeapi.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.locationtech.jts.geom.Point;
@@ -12,6 +13,7 @@ import org.locationtech.jts.geom.Point;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Store {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +26,7 @@ public class Store {
 
     @Column(name= "location", columnDefinition = "POINT SRID 4326", nullable = false)
     private Point location;
+
+
 
 }

@@ -1,4 +1,4 @@
-package org.fawry.storeapi.dtos;
+package org.fawry.storeapi.dtos.stock;
 
 
 import lombok.AllArgsConstructor;

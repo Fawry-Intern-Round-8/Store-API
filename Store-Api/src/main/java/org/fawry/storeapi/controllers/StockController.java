@@ -24,7 +24,18 @@ public class StockController {
         return ResponseEntity.ok(isAvailable);
     }
 
-
+    @PostMapping("/createStock")
+    public ResponseEntity<StockResponseDTO> createStock(
+            @RequestBody StockRequestDTO stockRequestDTO){
+        StockResponseDTO stockResponseDTO = stockService.createStock(stockRequestDTO);
+        return ResponseEntity.ok(stockResponseDTO);
+    }
+    @PostMapping("/addStock")
+    public ResponseEntity<StockResponseDTO> addStock(
+            @RequestBody StockRequestDTO stockRequestDTO){
+        StockResponseDTO stockResponseDTO = stockService.addStock(stockRequestDTO);
+        return ResponseEntity.ok(stockResponseDTO);
+    }
     @DeleteMapping("/{stockId}/deleteStock")
     public void deleteStock(@PathVariable Long stockId)
     {

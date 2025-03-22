@@ -7,6 +7,8 @@ import org.fawry.storeapi.entities.Store;
 public interface StockService {
 
     Long isProductAvailable(Long productId, int quantity);
+    StockResponseDTO createStock(StockRequestDTO stockRequestDTO);
+    StockResponseDTO addStock(StockRequestDTO stockRequestDTO);
 
     void deleteStockById(Long stockId);
     boolean stockExists(Long id);

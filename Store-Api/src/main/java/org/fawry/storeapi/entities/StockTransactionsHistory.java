@@ -18,9 +18,13 @@ public class StockTransactionsHistory {
     @Column(name = "id", nullable = false)
     private Long id;
 
+
+
     @ManyToOne
-    @JoinColumn(name = "stock_id", nullable = false)
-    private Stock stock;
+    @JoinColumn(name = "store_id", nullable = false)
+    private Store store;
+
+    private Long productId;
 
     @Column(name = "old_quantity", nullable = false)
     private int oldQuantity;

@@ -16,10 +16,11 @@ CREATE TABLE Stock (
 
 CREATE TABLE StockTransactionsHistory (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
-  stock_id BIGINT NOT NULL,
+  store_id BIGINT NOT NULL,
+  product_id BIGINT NOT NULL,
   old_quantity INT NOT NULL,
   new_quantity INT NOT NULL,
   transaction_type ENUM('ADD', 'CONSUME') NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
-  FOREIGN KEY (stock_id) REFERENCES Stock(id) ON DELETE CASCADE
+  FOREIGN KEY (store_id) REFERENCES Store(id) ON DELETE CASCADE
 );

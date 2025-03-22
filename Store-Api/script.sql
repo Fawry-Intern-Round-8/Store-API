@@ -19,5 +19,6 @@ CREATE TABLE StockTransactionsHistory (
   old_quantity INT NOT NULL,
   new_quantity INT NOT NULL,
   transaction_type ENUM('ADD', 'CONSUME') NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
   FOREIGN KEY (stock_id) REFERENCES Stock(id) ON DELETE CASCADE
 );

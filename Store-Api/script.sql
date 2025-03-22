@@ -10,6 +10,7 @@ CREATE TABLE Stock (
    store_id BIGINT NOT NULL,
    product_id BIGINT NOT NULL,
    quantity INT NOT NULL,
+   available BOOLEAN DEFAULT TRUE NOT NULL
    FOREIGN KEY (store_id) REFERENCES Store(id) ON DELETE CASCADE
 );
 

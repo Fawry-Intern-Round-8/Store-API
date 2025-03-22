@@ -14,13 +14,13 @@ CREATE TABLE Stock (
    FOREIGN KEY (store_id) REFERENCES Store(id) ON DELETE CASCADE
 );
 
-CREATE TABLE StockTransactionsHistory (
+CREATE TABLE Stock_Transactions_History  (
   id BIGINT PRIMARY KEY AUTO_INCREMENT,
   store_id BIGINT NOT NULL,
   product_id BIGINT NOT NULL,
   old_quantity INT NOT NULL,
   new_quantity INT NOT NULL,
   transaction_type ENUM('ADD', 'CONSUME') NOT NULL,
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
   FOREIGN KEY (store_id) REFERENCES Store(id) ON DELETE CASCADE
 );

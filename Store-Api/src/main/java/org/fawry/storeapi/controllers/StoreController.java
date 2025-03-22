@@ -1,10 +1,13 @@
 package org.fawry.storeapi.controllers;
 
-import org.fawry.storeapi.dtos.*;
+import org.fawry.storeapi.dtos.stock.StockDTO;
+import org.fawry.storeapi.dtos.store.StoreDTO;
+import org.fawry.storeapi.dtos.store.StoreRequestDTO;
+import org.fawry.storeapi.dtos.store.StoreResponseDTO;
+import org.fawry.storeapi.dtos.store.StoreWithDistanceDTO;
 import org.fawry.storeapi.services.store.StoreService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

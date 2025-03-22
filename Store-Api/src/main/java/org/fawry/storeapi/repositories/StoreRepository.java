@@ -1,7 +1,5 @@
 package org.fawry.storeapi.repositories;
 
-import org.fawry.storeapi.dtos.StoreDTO;
-import org.fawry.storeapi.dtos.StoreResponseDTO;
 import org.fawry.storeapi.entities.Store;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

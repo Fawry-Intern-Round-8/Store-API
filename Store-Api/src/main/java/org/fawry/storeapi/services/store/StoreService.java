@@ -1,9 +1,9 @@
 package org.fawry.storeapi.services.store;
 
-import org.fawry.storeapi.dtos.StockDTO;
-import org.fawry.storeapi.dtos.StoreDTO;
-import org.fawry.storeapi.dtos.StoreResponseDTO;
-import org.fawry.storeapi.dtos.StoreWithDistanceDTO;
+import org.fawry.storeapi.dtos.stock.StockDTO;
+import org.fawry.storeapi.dtos.store.StoreDTO;
+import org.fawry.storeapi.dtos.store.StoreResponseDTO;
+import org.fawry.storeapi.dtos.store.StoreWithDistanceDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

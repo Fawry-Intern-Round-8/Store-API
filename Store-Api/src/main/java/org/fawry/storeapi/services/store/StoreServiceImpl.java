@@ -1,9 +1,9 @@
 package org.fawry.storeapi.services.store;
 
-import org.fawry.storeapi.dtos.StockDTO;
-import org.fawry.storeapi.dtos.StoreDTO;
-import org.fawry.storeapi.dtos.StoreResponseDTO;
-import org.fawry.storeapi.dtos.StoreWithDistanceDTO;
+import org.fawry.storeapi.dtos.stock.StockDTO;
+import org.fawry.storeapi.dtos.store.StoreDTO;
+import org.fawry.storeapi.dtos.store.StoreResponseDTO;
+import org.fawry.storeapi.dtos.store.StoreWithDistanceDTO;
 import org.fawry.storeapi.entities.Stock;
 import org.fawry.storeapi.entities.Store;
 import org.fawry.storeapi.mappers.StockMapper;
@@ -98,6 +98,10 @@ public class StoreServiceImpl implements StoreService {
         // Returning an error here too
         Store store = storeRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Store not found"));
+
+        System.out.println("Fetched Store: " + store);
+
+
         return storeMapper.toDTO(store);
     }
 

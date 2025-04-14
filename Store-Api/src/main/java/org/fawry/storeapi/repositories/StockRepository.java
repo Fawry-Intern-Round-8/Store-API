@@ -20,11 +20,11 @@ public interface StockRepository extends JpaRepository<Stock,Long> {
     int getTotalStockCountByStoreId(@Param("storeId") Long storeId);
 
     @Query(value = """
-    SELECT COUNT(*) > 0 FROM stock st
+    SELECT SUM(st.quantity) >= :quantity 
+    FROM stock st
     WHERE st.product_id = :productId
-    AND st.quantity >= :quantity
     """, nativeQuery = true)
-    Long isProductAvailableInAnyStore(@Param("productId") Long productId,
+    Long isProductAvailableAcrossStores(@Param("productId") Long productId,
                                          @Param("quantity") int quantity);
 
     List<Stock> findByAvailableTrue();

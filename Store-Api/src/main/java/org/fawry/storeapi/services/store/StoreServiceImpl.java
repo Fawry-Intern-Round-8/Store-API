@@ -105,22 +105,9 @@ public class StoreServiceImpl implements StoreService {
         return storeMapper.toDTO(store);
     }
 
-    @Override
-    public StoreDTO findStoreByName(String name) {
-        return storeMapper.toDTO(storeRepository.findStoreByName(name));
-    }
 
-    public Page<StoreWithDistanceDTO> findNearestStores(double longitude, double latitude, double radius, Pageable pageable) {
-        return storeRepository.findNearestStores(longitude, latitude, radius, pageable)
-                .map(obj -> new StoreWithDistanceDTO(
-                        (Long) obj[0],
-                        (String) obj[1],
-                        (String) obj[2],
-                        (Double) obj[3]
-                ));
-    }
-    public Page<StoreWithDistanceDTO> findNearestStoresWithProduct(Long productId, double longitude, double latitude, double radius, Pageable pageable) {
-        return storeRepository.findNearestStoresWithProduct(productId,longitude, latitude, radius, pageable)
+    public Page<StoreWithDistanceDTO> findNearestStoresWithProduct(Long productId, double longitude, double latitude, Pageable pageable) {
+        return storeRepository.findNearestStoresWithProduct(productId,longitude, latitude, pageable)
                 .map(obj -> new StoreWithDistanceDTO(
                         (Long) obj[0],
                         (String) obj[1],

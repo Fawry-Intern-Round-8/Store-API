@@ -13,18 +13,6 @@ public interface StoreRepository extends CrudRepository<Store, Long> {
     SELECT s.id, s.name, s.address,
            ST_Distance_Sphere(s.location, ST_GeomFromText(CONCAT('POINT(', :longitude, ' ', :latitude, ')'), 4326)) AS distance_meters
     FROM store s
-    WHERE ST_Distance_Sphere(s.location, ST_GeomFromText(CONCAT('POINT(', :longitude, ' ', :latitude, ')'), 4326)) <= :radius
-    ORDER BY distance_meters ASC
-    """, nativeQuery = true)
-    Page<Object[]> findNearestStores(@Param("longitude") double longitude,
-                                     @Param("latitude") double latitude,
-                                     @Param("radius") double radius,
-                                     Pageable pageable);
-
-    @Query(value = """
-    SELECT s.id, s.name, s.address,
-           ST_Distance_Sphere(s.location, ST_GeomFromText(CONCAT('POINT(', :longitude, ' ', :latitude, ')'), 4326)) AS distance_meters
-    FROM store s
     JOIN stock st ON s.id = st.store_id
     WHERE st.product_id = :productId
     AND ST_Distance_Sphere(s.location, ST_GeomFromText(CONCAT('POINT(', :longitude, ' ', :latitude, ')'), 4326)) <= :radius

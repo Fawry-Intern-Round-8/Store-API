@@ -65,14 +65,6 @@ public class StoreController {
         return storeService.getTotalStockCount(storeId);
     }
 
-    @GetMapping("/nearest")
-    public Page<StoreWithDistanceDTO> getNearestStores(
-            @RequestParam double longitude,
-            @RequestParam double latitude,
-            @RequestParam double radius,
-            Pageable pageable) {
-        return storeService.findNearestStores(longitude, latitude, radius, pageable);
-    }
     @GetMapping("/nearest-withProduct")
     public Page<StoreWithDistanceDTO> getNearestStores(
             @RequestParam Long productId,

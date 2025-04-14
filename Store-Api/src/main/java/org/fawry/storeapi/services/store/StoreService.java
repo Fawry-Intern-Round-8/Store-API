@@ -17,11 +17,7 @@ public interface StoreService {
     List<StoreResponseDTO> getAllStores();
 
     StoreDTO findStoreById(Long id);
-
-    StoreDTO findStoreByName(String name);
-
-    Page<StoreWithDistanceDTO> findNearestStores(double longitude, double latitude, double radius, Pageable pageable);
-    Page<StoreWithDistanceDTO> findNearestStoresWithProduct(Long productId, double longitude, double latitude, double radius, Pageable pageable);
+    Page<StoreWithDistanceDTO> findNearestStoresWithProduct(Long productId, double longitude, double latitude, Pageable pageable);
     void deleteStoreById(Long id);
 
     boolean storeExists(Long id);

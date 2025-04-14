@@ -1,6 +1,8 @@
 package org.fawry.storeapi.services.stock;
 
 
+import org.fawry.storeapi.dtos.stock.StockConsumeRequestDTO;
+import org.fawry.storeapi.dtos.stock.StockConsumeResponseDTO;
 import org.fawry.storeapi.dtos.stock.StockRequestDTO;
 import org.fawry.storeapi.dtos.stock.StockResponseDTO;
 import org.fawry.storeapi.entities.Stock;
@@ -11,8 +13,12 @@ import org.fawry.storeapi.exceptions.StockNotFountException;
 import org.fawry.storeapi.repositories.StockRepository;
 import org.fawry.storeapi.repositories.StoreRepository;
 import org.fawry.storeapi.services.stockhistory.StockTransactionsHistoryService;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -21,6 +27,7 @@ public class StockServiceImpl implements StockService{
     private final StoreRepository storeRepository;
     private final StockTransactionsHistoryService stockTransactionsHistoryService;
 
+
     public StockServiceImpl(StockRepository stockRepository, StoreRepository storeRepository, StockTransactionsHistoryService stockTransactionsHistoryService) {
         this.stockRepository = stockRepository;
         this.storeRepository = storeRepository;
@@ -28,8 +35,8 @@ public class StockServiceImpl implements StockService{
     }
 
     public Long isProductAvailable(Long productId, int quantity) {
-        System.out.println(stockRepository.isProductAvailableInAnyStore(productId, quantity));
-        return stockRepository.isProductAvailableInAnyStore(productId, quantity);
+        System.out.println(stockRepository.isProductAvailableAcrossStores(productId, quantity));
+        return stockRepository.isProductAvailableAcrossStores(productId, quantity);
     }
 
     @Override
@@ -97,6 +104,59 @@ public class StockServiceImpl implements StockService{
         return mapToStockResponseDTO(savedStock);
     }
 
+    @Transactional
+    @Override
+    public List<StockConsumeResponseDTO> consumeStock(StockConsumeRequestDTO stockConsumeRequestDTO) {
+        // TODO: Should check ProductId is available or not
+
+        Long productId = stockConsumeRequestDTO.getProductId();
+        int quantity = stockConsumeRequestDTO.getQuantity();
+        String customerEmail =stockConsumeRequestDTO.getCustomerEmail();
+        double longitude = stockConsumeRequestDTO.getLongitude();
+        double latitude = stockConsumeRequestDTO.getLatitude();
+        Long result = stockRepository.isProductAvailableAcrossStores(productId, quantity);
+        boolean isAvailableQuantity = result != null && result > 0;
+        if (!isAvailableQuantity) {
+            throw new StockNotFountException("Not enough stock available");
+        }
+
+        int remaining = quantity;
+        Pageable pageable = PageRequest.of(0, Integer.MAX_VALUE);
+        List<Object[]> stores = storeRepository.findNearestStoresWithProduct(productId, longitude, latitude, pageable).getContent();
+
+        List<StockConsumeResponseDTO> consumptionReport = new ArrayList<>();
+
+        for (Object[] row : stores) {
+            Long storeId = ((Number) row[0]).longValue();
+            String storeName = (String) row[1];
+            String storeAddress = (String) row[2];
+            double distance = ((Number) row[3]).doubleValue();
+            int availableQuantity = ((Number) row[4]).intValue();
+
+            int consumed = Math.min(remaining, availableQuantity);
+
+            stockRepository.decreaseQuantity(storeId, productId, consumed);
+
+            Store store = storeRepository.findById(storeId).orElseThrow();
+
+            stockTransactionsHistoryService.logConsumerTransaction(
+                    store, productId,
+                    availableQuantity,
+                    availableQuantity - consumed,
+                    TransactionType.CONSUME,
+                    customerEmail
+            );
+
+            consumptionReport.add(new StockConsumeResponseDTO(storeId, storeName, storeAddress, distance, consumed));
+
+            remaining -= consumed;
+            if (remaining == 0) break;
+        }
+        // TODO: Should pass to notifcations api
+        return consumptionReport;
+    }
+
+
 
     private StockResponseDTO mapToStockResponseDTO(Stock stock) {
         return StockResponseDTO.builder()
@@ -120,13 +180,6 @@ public class StockServiceImpl implements StockService{
         stockRepository.save(stock);
 
     }
-
-
-    @Override
-    public boolean stockExists(Long id) {
-        return stockRepository.findById(id).isPresent();
-    }
-
     @Override
     public Store getStoreByStockId(Long stockId) {
         return stockRepository.findStoreByStockId(stockId);

@@ -4,10 +4,7 @@ import org.fawry.storeapi.dtos.stock.StockDTO;
 import org.fawry.storeapi.dtos.store.StoreDTO;
 import org.fawry.storeapi.dtos.store.StoreRequestDTO;
 import org.fawry.storeapi.dtos.store.StoreResponseDTO;
-import org.fawry.storeapi.dtos.store.StoreWithDistanceDTO;
 import org.fawry.storeapi.services.store.StoreService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -65,15 +62,6 @@ public class StoreController {
         return storeService.getTotalStockCount(storeId);
     }
 
-    @GetMapping("/nearest-withProduct")
-    public Page<StoreWithDistanceDTO> getNearestStores(
-            @RequestParam Long productId,
-            @RequestParam double longitude,
-            @RequestParam double latitude,
-            @RequestParam double radius,
-            Pageable pageable) {
-        return storeService.findNearestStoresWithProduct(productId, longitude, latitude, radius, pageable);
-    }
 
 }
 

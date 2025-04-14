@@ -5,6 +5,7 @@ import org.fawry.storeapi.entities.Store;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -27,13 +28,20 @@ public interface StockRepository extends JpaRepository<Stock,Long> {
     Long isProductAvailableAcrossStores(@Param("productId") Long productId,
                                          @Param("quantity") int quantity);
 
-    List<Stock> findByAvailableTrue();
 
     @Query("SELECT s.store FROM Stock s WHERE s.id = :stockId")
     Store findStoreByStockId(@Param("stockId") Long stockId);
 
-    @Query("SELECT s FROM Stock s WHERE s.productId = :productId AND s.store.id = :storeId AND s.available = TRUE")
-    Optional<Stock> findStockByProductIdAndStoreIdAndAvailable(@Param("productId") Long productId, @Param("storeId") Long storeId);
     @Query("SELECT s FROM Stock s WHERE s.productId = :productId AND s.store.id = :storeId")
     Optional<Stock> findStockByProductIdAndStoreId(@Param("productId") Long productId, @Param("storeId") Long storeId);
+
+    @Modifying
+    @Query(value = """
+    UPDATE stock
+    SET quantity = quantity - :amount
+    WHERE store_id = :storeId AND product_id = :productId AND quantity >= :amount
+    """, nativeQuery = true)
+    int decreaseQuantity(@Param("storeId") Long storeId,
+                         @Param("productId") Long productId,
+                         @Param("amount") int amount);
 }

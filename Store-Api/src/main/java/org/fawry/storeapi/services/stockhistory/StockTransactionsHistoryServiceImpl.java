@@ -13,16 +13,26 @@ public class StockTransactionsHistoryServiceImpl implements StockTransactionsHis
     public StockTransactionsHistoryServiceImpl(StockTransactionsHistoryRepository stockTransactionsHistoryRepository) {
         this.stockTransactionsHistoryRepository = stockTransactionsHistoryRepository;
     }
-
     @Override
-    public void logTransaction(Store store, Long productId, int oldQuantity, int newQuantity, TransactionType transactionType) {
+    public void logInternalTransaction(Store store, Long productId, int oldQuantity, int newQuantity, TransactionType transactionType) {
         StockTransactionsHistory stockTransactionsHistory = new StockTransactionsHistory();
         stockTransactionsHistory.setStore(store);
         stockTransactionsHistory.setProductId(productId);
         stockTransactionsHistory.setOldQuantity(oldQuantity);
         stockTransactionsHistory.setNewQuantity(newQuantity);
         stockTransactionsHistory.setTransactionType(transactionType);
+        stockTransactionsHistoryRepository.save(stockTransactionsHistory);
+    }
 
+    @Override
+    public void logConsumerTransaction(Store store, Long productId, int oldQuantity, int newQuantity, TransactionType transactionType, String consumerEmail) {
+        StockTransactionsHistory stockTransactionsHistory = new StockTransactionsHistory();
+        stockTransactionsHistory.setStore(store);
+        stockTransactionsHistory.setProductId(productId);
+        stockTransactionsHistory.setOldQuantity(oldQuantity);
+        stockTransactionsHistory.setNewQuantity(newQuantity);
+        stockTransactionsHistory.setTransactionType(transactionType);
+        stockTransactionsHistory.setConsumerEmail(consumerEmail);
         stockTransactionsHistoryRepository.save(stockTransactionsHistory);
     }
 }

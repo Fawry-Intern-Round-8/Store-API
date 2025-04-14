@@ -18,8 +18,6 @@ public class StockTransactionsHistory {
     @Column(name = "id", nullable = false)
     private Long id;
 
-
-
     @ManyToOne
     @JoinColumn(name = "store_id", nullable = false)
     private Store store;
@@ -39,4 +37,6 @@ public class StockTransactionsHistory {
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private Instant createdAt;
+    @Column(name = "consumer_email")
+    private String consumerEmail;
 }

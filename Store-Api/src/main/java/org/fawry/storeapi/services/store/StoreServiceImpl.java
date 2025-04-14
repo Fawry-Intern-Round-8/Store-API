@@ -1,8 +1,9 @@
 package org.fawry.storeapi.services.store;
 
-import org.fawry.storeapi.dtos.StockDTO;
-import org.fawry.storeapi.dtos.StoreDTO;
-import org.fawry.storeapi.dtos.StoreResponseDTO;
+import org.fawry.storeapi.dtos.stock.StockDTO;
+import org.fawry.storeapi.dtos.store.StoreDTO;
+import org.fawry.storeapi.dtos.store.StoreResponseDTO;
+import org.fawry.storeapi.dtos.store.StoreWithDistanceDTO;
 import org.fawry.storeapi.entities.Stock;
 import org.fawry.storeapi.entities.Store;
 import org.fawry.storeapi.mappers.StockMapper;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class StoreServiceImpl implements StoreService {
@@ -75,12 +78,30 @@ public class StoreServiceImpl implements StoreService {
                 .build();
 
     }
+    public List<StoreResponseDTO> getAllStores() {
+        Iterable<Store> stores = storeRepository.findAll();
+        // Convert Iterable to Stream
+        return StreamSupport.stream(stores.spliterator(), false)
+                .map(store -> StoreResponseDTO.builder()
+                        .id(store.getId())
+                        .name(store.getName())
+                        .address(store.getAddress())
+                        .longitude(store.getLocation().getX())
+                        .latitude(store.getLocation().getY())
+                        .build()
+                )
+                .collect(Collectors.toList());
+    }
 
     @Override
     public StoreDTO findStoreById(Long id) {
         // Returning an error here too
         Store store = storeRepository.findById(id)
                     .orElseThrow(() -> new RuntimeException("Store not found"));
+
+        System.out.println("Fetched Store: " + store);
+
+
         return storeMapper.toDTO(store);
     }
 
@@ -89,12 +110,25 @@ public class StoreServiceImpl implements StoreService {
         return storeMapper.toDTO(storeRepository.findStoreByName(name));
     }
 
-    @Override
-    public List<StoreResponseDTO> findNearestStores(double longitude, double latitude, double radius, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<StoreResponseDTO> storePage = storeRepository.findNearestStores(longitude, latitude, radius, pageable);
-        return storePage.getContent();
+    public Page<StoreWithDistanceDTO> findNearestStores(double longitude, double latitude, double radius, Pageable pageable) {
+        return storeRepository.findNearestStores(longitude, latitude, radius, pageable)
+                .map(obj -> new StoreWithDistanceDTO(
+                        (Long) obj[0],
+                        (String) obj[1],
+                        (String) obj[2],
+                        (Double) obj[3]
+                ));
     }
+    public Page<StoreWithDistanceDTO> findNearestStoresWithProduct(Long productId, double longitude, double latitude, double radius, Pageable pageable) {
+        return storeRepository.findNearestStoresWithProduct(productId,longitude, latitude, radius, pageable)
+                .map(obj -> new StoreWithDistanceDTO(
+                        (Long) obj[0],
+                        (String) obj[1],
+                        (String) obj[2],
+                        (Double) obj[3]
+                ));
+    }
+
 
     @Override
     public void deleteStoreById(Long id) {

@@ -24,5 +24,8 @@ public class Stock {
 
     @Column(name = "quantity", nullable = false)
     private int quantity;
+
+    @Column(name = "available", nullable = false)
+    private boolean available = true;
 }
 

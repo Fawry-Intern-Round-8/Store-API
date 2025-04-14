@@ -1,22 +1,30 @@
 package org.fawry.storeapi.controllers;
 
-import org.fawry.storeapi.dtos.StockDTO;
-import org.fawry.storeapi.dtos.StoreDTO;
-import org.fawry.storeapi.dtos.StoreRequestDTO;
-import org.fawry.storeapi.dtos.StoreResponseDTO;
+import org.fawry.storeapi.dtos.stock.StockDTO;
+import org.fawry.storeapi.dtos.store.StoreDTO;
+import org.fawry.storeapi.dtos.store.StoreRequestDTO;
+import org.fawry.storeapi.dtos.store.StoreResponseDTO;
+import org.fawry.storeapi.dtos.store.StoreWithDistanceDTO;
 import org.fawry.storeapi.services.store.StoreService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/stores")
+@RequestMapping("/api/stores")
 public class StoreController {
 
     private final StoreService storeService;
 
     public StoreController(StoreService storeService) {
         this.storeService = storeService;
+    }
+
+    @GetMapping("/getAllStores")
+    public List<StoreResponseDTO> getAllStores(){
+        return storeService.getAllStores();
     }
 
     @GetMapping("/{storeId}/stocks")
@@ -57,6 +65,23 @@ public class StoreController {
         return storeService.getTotalStockCount(storeId);
     }
 
+    @GetMapping("/nearest")
+    public Page<StoreWithDistanceDTO> getNearestStores(
+            @RequestParam double longitude,
+            @RequestParam double latitude,
+            @RequestParam double radius,
+            Pageable pageable) {
+        return storeService.findNearestStores(longitude, latitude, radius, pageable);
+    }
+    @GetMapping("/nearest-withProduct")
+    public Page<StoreWithDistanceDTO> getNearestStores(
+            @RequestParam Long productId,
+            @RequestParam double longitude,
+            @RequestParam double latitude,
+            @RequestParam double radius,
+            Pageable pageable) {
+        return storeService.findNearestStoresWithProduct(productId, longitude, latitude, radius, pageable);
+    }
 
 }
 

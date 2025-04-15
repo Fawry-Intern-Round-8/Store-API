@@ -3,7 +3,6 @@ package org.fawry.storeapi.services.store;
 import org.fawry.storeapi.dtos.stock.StockDTO;
 import org.fawry.storeapi.dtos.store.StoreDTO;
 import org.fawry.storeapi.dtos.store.StoreResponseDTO;
-import org.fawry.storeapi.dtos.store.StoreWithDistanceDTO;
 import org.fawry.storeapi.entities.Stock;
 import org.fawry.storeapi.entities.Store;
 import org.fawry.storeapi.mappers.StockMapper;
@@ -103,30 +102,6 @@ public class StoreServiceImpl implements StoreService {
 
 
         return storeMapper.toDTO(store);
-    }
-
-    @Override
-    public StoreDTO findStoreByName(String name) {
-        return storeMapper.toDTO(storeRepository.findStoreByName(name));
-    }
-
-    public Page<StoreWithDistanceDTO> findNearestStores(double longitude, double latitude, double radius, Pageable pageable) {
-        return storeRepository.findNearestStores(longitude, latitude, radius, pageable)
-                .map(obj -> new StoreWithDistanceDTO(
-                        (Long) obj[0],
-                        (String) obj[1],
-                        (String) obj[2],
-                        (Double) obj[3]
-                ));
-    }
-    public Page<StoreWithDistanceDTO> findNearestStoresWithProduct(Long productId, double longitude, double latitude, double radius, Pageable pageable) {
-        return storeRepository.findNearestStoresWithProduct(productId,longitude, latitude, radius, pageable)
-                .map(obj -> new StoreWithDistanceDTO(
-                        (Long) obj[0],
-                        (String) obj[1],
-                        (String) obj[2],
-                        (Double) obj[3]
-                ));
     }
 
 

@@ -14,6 +14,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Table(name = "stock_transactions_history")
 public class StockTransactionsHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

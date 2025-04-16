@@ -8,10 +8,12 @@ import org.fawry.storeapi.dtos.stock.StockResponseDTO;
 import org.fawry.storeapi.entities.Stock;
 import org.fawry.storeapi.entities.Store;
 import org.fawry.storeapi.entities.TransactionType;
+import org.fawry.storeapi.exceptions.ProductDoesNotExist;
 import org.fawry.storeapi.exceptions.StockAlreadyExistsException;
 import org.fawry.storeapi.exceptions.StockNotFountException;
 import org.fawry.storeapi.repositories.StockRepository;
 import org.fawry.storeapi.repositories.StoreRepository;
+import org.fawry.storeapi.services.client.ProductClientService;
 import org.fawry.storeapi.services.stockhistory.StockTransactionsHistoryService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,12 +28,14 @@ public class StockServiceImpl implements StockService{
     private final StockRepository stockRepository;
     private final StoreRepository storeRepository;
     private final StockTransactionsHistoryService stockTransactionsHistoryService;
+    private final ProductClientService productClientService;
 
 
-    public StockServiceImpl(StockRepository stockRepository, StoreRepository storeRepository, StockTransactionsHistoryService stockTransactionsHistoryService) {
+    public StockServiceImpl(StockRepository stockRepository, StoreRepository storeRepository, StockTransactionsHistoryService stockTransactionsHistoryService, ProductClientService productClientService) {
         this.stockRepository = stockRepository;
         this.storeRepository = storeRepository;
         this.stockTransactionsHistoryService = stockTransactionsHistoryService;
+        this.productClientService = productClientService;
     }
 
     public Long isProductAvailable(Long productId, int quantity) {
@@ -45,7 +49,10 @@ public class StockServiceImpl implements StockService{
         Long productId = stockRequestDTO.getProductId();
         int quantity = stockRequestDTO.getQuantity();
 
-        // TODO: Check if the product exists using ProductAPI
+        boolean productExists = productClientService.checkProductExists(productId);
+        if (!productExists) {
+            throw new ProductDoesNotExist("Product: " + productId + " not found");
+        }
 
         // Check if the product already exists in this store
         Optional<Stock> existingStockOpt = stockRepository.findStockByProductIdAndStoreId(productId, storeId);
@@ -107,9 +114,14 @@ public class StockServiceImpl implements StockService{
     @Transactional
     @Override
     public List<StockConsumeResponseDTO> consumeStock(StockConsumeRequestDTO stockConsumeRequestDTO) {
-        // TODO: Should check ProductId is available or not
 
         Long productId = stockConsumeRequestDTO.getProductId();
+
+        boolean productExists = productClientService.checkProductExists(productId);
+        if (!productExists) {
+            throw new ProductDoesNotExist("Product: " + productId + " not found");
+        }
+
         int quantity = stockConsumeRequestDTO.getQuantity();
         String customerEmail =stockConsumeRequestDTO.getCustomerEmail();
         double longitude = stockConsumeRequestDTO.getLongitude();
@@ -152,7 +164,9 @@ public class StockServiceImpl implements StockService{
             remaining -= consumed;
             if (remaining == 0) break;
         }
-        // TODO: Should pass to notifcations api
+
+        // TODO: Should pass to notifications api
+
         return consumptionReport;
     }
 

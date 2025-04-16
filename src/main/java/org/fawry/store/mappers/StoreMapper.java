@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class StoreMapper {
 
-    public static StoreDTO toDTO(Store store){
+    public static StoreDTO toDTO(Store store) {
         return new StoreDTO(
                 store.getId(),
                 store.getName(),

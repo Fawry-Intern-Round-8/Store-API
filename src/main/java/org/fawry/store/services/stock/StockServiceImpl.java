@@ -19,12 +19,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class StockServiceImpl implements StockService{
+public class StockServiceImpl implements StockService {
     private final StockRepository stockRepository;
     private final StoreRepository storeRepository;
     private final StockTransactionsHistoryService stockTransactionsHistoryService;
@@ -123,7 +124,7 @@ public class StockServiceImpl implements StockService{
         }
 
         int quantity = stockConsumeRequestDTO.getQuantity();
-        String customerEmail =stockConsumeRequestDTO.getCustomerEmail();
+        String customerEmail = stockConsumeRequestDTO.getCustomerEmail();
         double longitude = stockConsumeRequestDTO.getLongitude();
         double latitude = stockConsumeRequestDTO.getLatitude();
         Long result = stockRepository.isProductAvailableAcrossStores(productId, quantity);
@@ -171,7 +172,6 @@ public class StockServiceImpl implements StockService{
     }
 
 
-
     private StockResponseDTO mapToStockResponseDTO(Stock stock) {
         return StockResponseDTO.builder()
                 .id(stock.getId())
@@ -187,13 +187,14 @@ public class StockServiceImpl implements StockService{
                 .orElseThrow(() -> new StockNotFountException("Stock not found with ID: " + stockId));
         Store store = getStoreByStockId(stockId);
 
-        stockTransactionsHistoryService.logInternalTransaction(store, stock.getProductId(), stock.getQuantity(),0, TransactionType.CONSUME);
+        stockTransactionsHistoryService.logInternalTransaction(store, stock.getProductId(), stock.getQuantity(), 0, TransactionType.CONSUME);
         // Deleting the stock
         stock.setQuantity(0);
         stock.setAvailable(false);
         stockRepository.save(stock);
 
     }
+
     @Override
     public Store getStoreByStockId(Long stockId) {
         return stockRepository.findStoreByStockId(stockId);

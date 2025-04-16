@@ -13,6 +13,7 @@ public class StockTransactionsHistoryServiceImpl implements StockTransactionsHis
     public StockTransactionsHistoryServiceImpl(StockTransactionsHistoryRepository stockTransactionsHistoryRepository) {
         this.stockTransactionsHistoryRepository = stockTransactionsHistoryRepository;
     }
+
     @Override
     public void logInternalTransaction(Store store, Long productId, int oldQuantity, int newQuantity, TransactionType transactionType) {
         StockTransactionsHistory stockTransactionsHistory = new StockTransactionsHistory();

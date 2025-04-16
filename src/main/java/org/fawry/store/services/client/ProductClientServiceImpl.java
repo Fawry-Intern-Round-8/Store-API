@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class ProductClientServiceImpl implements ProductClientService{
+public class ProductClientServiceImpl implements ProductClientService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final String PRODUCT_API_BASE_URL = "http://localhost:8081/api/products/";
 

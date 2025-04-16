@@ -3,6 +3,7 @@ package org.fawry.store.services.store;
 import org.fawry.store.dtos.stock.StockDTO;
 import org.fawry.store.dtos.store.StoreDTO;
 import org.fawry.store.dtos.store.StoreResponseDTO;
+
 import java.util.List;
 
 public interface StoreService {
@@ -13,6 +14,7 @@ public interface StoreService {
     List<StoreResponseDTO> getAllStores();
 
     StoreDTO findStoreById(Long id);
+
     void deleteStoreById(Long id);
 
     boolean storeExists(Long id);

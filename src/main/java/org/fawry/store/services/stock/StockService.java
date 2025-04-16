@@ -11,8 +11,11 @@ import java.util.List;
 public interface StockService {
 
     Long isProductAvailable(Long productId, int quantity);
+
     StockResponseDTO createStock(StockRequestDTO stockRequestDTO);
+
     StockResponseDTO addStock(StockRequestDTO stockRequestDTO);
+
     List<StockConsumeResponseDTO> consumeStock(StockConsumeRequestDTO stockConsumeRequestDTO);
 
     void deleteStockById(Long stockId);

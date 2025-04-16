@@ -14,18 +14,19 @@ import java.util.Optional;
 
 
 @Repository
-public interface StockRepository extends JpaRepository<Stock,Long> {
+public interface StockRepository extends JpaRepository<Stock, Long> {
     Page<Stock> findByStoreId(Long storeId, Pageable pageable);
+
     @Query(value = "SELECT COALESCE(SUM(quantity), 0) FROM stock WHERE store_id = :storeId", nativeQuery = true)
     int getTotalStockCountByStoreId(@Param("storeId") Long storeId);
 
     @Query(value = """
-    SELECT SUM(st.quantity) >= :quantity 
-    FROM stock st
-    WHERE st.product_id = :productId
-    """, nativeQuery = true)
+            SELECT SUM(st.quantity) >= :quantity 
+            FROM stock st
+            WHERE st.product_id = :productId
+            """, nativeQuery = true)
     Long isProductAvailableAcrossStores(@Param("productId") Long productId,
-                                         @Param("quantity") int quantity);
+                                        @Param("quantity") int quantity);
 
 
     @Query("SELECT s.store FROM Stock s WHERE s.id = :stockId")
@@ -36,10 +37,10 @@ public interface StockRepository extends JpaRepository<Stock,Long> {
 
     @Modifying
     @Query(value = """
-    UPDATE stock
-    SET quantity = quantity - :amount
-    WHERE store_id = :storeId AND product_id = :productId AND quantity >= :amount
-    """, nativeQuery = true)
+            UPDATE stock
+            SET quantity = quantity - :amount
+            WHERE store_id = :storeId AND product_id = :productId AND quantity >= :amount
+            """, nativeQuery = true)
     int decreaseQuantity(@Param("storeId") Long storeId,
                          @Param("productId") Long productId,
                          @Param("amount") int amount);

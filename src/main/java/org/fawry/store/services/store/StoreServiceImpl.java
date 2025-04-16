@@ -26,8 +26,6 @@ public class StoreServiceImpl implements StoreService {
     private final StockRepository stockRepository;
 
 
-
-
     private final LocationServiceImpl locationService;
 
 
@@ -35,7 +33,7 @@ public class StoreServiceImpl implements StoreService {
                             LocationServiceImpl locationService) {
         this.storeRepository = storeRepository;
         this.stockRepository = stockRepository;
-        this.locationService=locationService;
+        this.locationService = locationService;
     }
 
     @Override
@@ -43,7 +41,7 @@ public class StoreServiceImpl implements StoreService {
         Store store = new Store();
         store.setName(name);
         store.setAddress(address);
-        store.setLocation(locationService.createPoint(longitude,latitude));
+        store.setLocation(locationService.createPoint(longitude, latitude));
 
         Store savedStore = storeRepository.save(store);
         new StoreResponseDTO();
@@ -62,7 +60,7 @@ public class StoreServiceImpl implements StoreService {
         // Should return an error if didn't find
         store.setName(name);
         store.setAddress(address);
-        store.setLocation(locationService.createPoint(longitude,latitude));
+        store.setLocation(locationService.createPoint(longitude, latitude));
         Store updatedStore = storeRepository.save(store);
         return StoreResponseDTO.builder()
                 .id(updatedStore.getId())
@@ -73,6 +71,7 @@ public class StoreServiceImpl implements StoreService {
                 .build();
 
     }
+
     public List<StoreResponseDTO> getAllStores() {
         Iterable<Store> stores = storeRepository.findAll();
         // Convert Iterable to Stream
@@ -92,7 +91,7 @@ public class StoreServiceImpl implements StoreService {
     public StoreDTO findStoreById(Long id) {
         // Returning an error here too
         Store store = storeRepository.findById(id)
-                    .orElseThrow(() -> new RuntimeException("Store not found"));
+                .orElseThrow(() -> new RuntimeException("Store not found"));
 
         System.out.println("Fetched Store: " + store);
 

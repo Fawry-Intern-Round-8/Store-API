@@ -2,14 +2,17 @@ package org.fawry.storeapi.mappers;
 
 import org.fawry.storeapi.dtos.store.StoreDTO;
 import org.fawry.storeapi.entities.Store;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring")
-public interface StoreMapper {
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "name", target = "name")
-    @Mapping(source = "address", target = "address")
-    StoreDTO toDTO(Store store);
-    Store toEntity(StoreDTO storeDTO);
+@Component
+public class StoreMapper {
+
+    public static StoreDTO toDTO(Store store){
+        return new StoreDTO(
+                store.getId(),
+                store.getName(),
+                store.getAddress()
+        );
+    }
+
 }

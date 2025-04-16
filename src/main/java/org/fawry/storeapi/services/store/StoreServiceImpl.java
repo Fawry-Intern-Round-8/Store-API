@@ -25,20 +25,16 @@ public class StoreServiceImpl implements StoreService {
     private final StoreRepository storeRepository;
     private final StockRepository stockRepository;
 
-    private final StockMapper stockMapper;
 
-    private final StoreMapper storeMapper;
+
 
     private final LocationServiceImpl locationService;
 
 
     public StoreServiceImpl(StoreRepository storeRepository, StockRepository stockRepository,
-                            StockMapper stockMapper, StoreMapper storeMapper,
                             LocationServiceImpl locationService) {
         this.storeRepository = storeRepository;
         this.stockRepository = stockRepository;
-        this.stockMapper = stockMapper;
-        this.storeMapper = storeMapper;
         this.locationService=locationService;
     }
 
@@ -101,7 +97,7 @@ public class StoreServiceImpl implements StoreService {
         System.out.println("Fetched Store: " + store);
 
 
-        return storeMapper.toDTO(store);
+        return StoreMapper.toDTO(store);
     }
 
 
@@ -125,7 +121,7 @@ public class StoreServiceImpl implements StoreService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Stock> stockPage = stockRepository.findByStoreId(id, pageable);
 
-        return stockPage.map(stockMapper::toDTO).getContent();
+        return stockPage.map(StockMapper::toDTO).getContent();
     }
 
     @Override

@@ -6,13 +6,12 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.4.3</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>org.fawry</groupId>
-	<artifactId>Store-Api</artifactId>
+	<artifactId>store</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>Store-Api</name>
-	<description>Store-Api</description>
+	<name>store-service</name>
 	<url/>
 	<licenses>
 		<license/>

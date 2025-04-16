@@ -39,8 +39,10 @@ public class StockServiceImpl implements StockService{
     }
 
     public Long isProductAvailable(Long productId, int quantity) {
-        System.out.println(stockRepository.isProductAvailableAcrossStores(productId, quantity));
-        return stockRepository.isProductAvailableAcrossStores(productId, quantity);
+
+        if( stockRepository.getTotalProductQuantity(productId) >= quantity) {
+            return 1L;
+        } else return 0L;
     }
 
     @Override
@@ -126,8 +128,8 @@ public class StockServiceImpl implements StockService{
         String customerEmail =stockConsumeRequestDTO.getCustomerEmail();
         double longitude = stockConsumeRequestDTO.getLongitude();
         double latitude = stockConsumeRequestDTO.getLatitude();
-        Long result = stockRepository.isProductAvailableAcrossStores(productId, quantity);
-        boolean isAvailableQuantity = result != null && result > 0;
+        Long totalProductQuantity = stockRepository.getTotalProductQuantity(productId);
+        boolean isAvailableQuantity = totalProductQuantity > quantity;
         if (!isAvailableQuantity) {
             throw new StockNotFountException("Not enough stock available");
         }

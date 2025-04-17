@@ -55,8 +55,8 @@ public class StockServiceImpl implements StockService{
         }
 
         // Check if the product already exists in this store
-        Optional<Stock> existingStockOpt = stockRepository.findStockByProductIdAndStoreId(productId, storeId);
         Store store = storeRepository.findStoreById(storeId);
+        Optional<Stock> existingStockOpt = stockRepository.findStockByProductIdAndStoreId(productId, storeId);
 
         if (existingStockOpt.isPresent()) {
             Stock existingStock = existingStockOpt.get();
@@ -78,7 +78,7 @@ public class StockServiceImpl implements StockService{
         newStock.setProductId(productId);
         newStock.setQuantity(quantity);
         Stock savedStock = stockRepository.save(newStock);
-        stockTransactionsHistoryService.logInternalTransaction(store, productId, 0, quantity, TransactionType.ADD);
+//        stockTransactionsHistoryService.logInternalTransaction(store, productId, 0, quantity, TransactionType.ADD);
 
         return mapToStockResponseDTO(savedStock);
     }
@@ -204,13 +204,20 @@ public class StockServiceImpl implements StockService{
         Pageable pageable = PageRequest.of(page, size);
         List<Stock> stocks = stockRepository.findAll(pageable).getContent();
         List<StockResponseDTO> stockResponseDTOs = new ArrayList<>();
-
         for (Stock stock : stocks) {
             StockResponseDTO stockResponseDTO = mapToStockResponseDTO(stock);
             stockResponseDTOs.add(stockResponseDTO);
         }
-
+        // remove stocks with unavailable
+        stockResponseDTOs.removeIf(stockResponseDTO -> !stockRepository.findById(stockResponseDTO.getId()).get().isAvailable());
         return stockResponseDTOs;
+    }
+
+    @Override
+    public StockResponseDTO getStockById(Long stockId) {
+        Stock stock = stockRepository.findById(stockId)
+                .orElseThrow(() -> new StockNotFountException("Stock not found with ID: " + stockId));
+        return mapToStockResponseDTO(stock);
     }
 
 }

@@ -21,4 +21,6 @@ public interface StockService {
 
 
     List<StockResponseDTO> getAllStocks(int page, int size);
+
+    StockResponseDTO getStockById(Long stockId);
 }

@@ -21,43 +21,42 @@ public class StockController {
     }
 
     @GetMapping("/availability")
-    public ResponseEntity<Long> checkProductAvailability(
-            @RequestParam Long productId,
-            @RequestParam int quantity) {
+    public ResponseEntity<Long> checkProductAvailability(@RequestParam Long productId, @RequestParam int quantity) {
         Long isAvailable = stockService.isProductAvailable(productId, quantity);
         return ResponseEntity.ok(isAvailable);
     }
 
     @GetMapping("/getAllStocks")
-    public ResponseEntity<List<StockResponseDTO>> getAllStocks(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+    public ResponseEntity<List<StockResponseDTO>> getAllStocks(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
         List<StockResponseDTO> stocks = stockService.getAllStocks(page, size);
         return ResponseEntity.ok(stocks);
     }
 
+    @GetMapping("/getStockById/{stockId}")
+    public ResponseEntity<StockResponseDTO> getStockById(@PathVariable Long stockId) {
+        StockResponseDTO stockResponseDTO = stockService.getStockById(stockId);
+        return ResponseEntity.ok(stockResponseDTO);
+    }
+
     @PostMapping("/createStock")
-    public ResponseEntity<StockResponseDTO> createStock(
-            @RequestBody StockRequestDTO stockRequestDTO){
+    public ResponseEntity<StockResponseDTO> createStock(@RequestBody StockRequestDTO stockRequestDTO) {
         StockResponseDTO stockResponseDTO = stockService.createStock(stockRequestDTO);
         return ResponseEntity.ok(stockResponseDTO);
     }
+
     @PostMapping("/addStock")
-    public ResponseEntity<StockResponseDTO> addStock(
-            @RequestBody StockRequestDTO stockRequestDTO){
+    public ResponseEntity<StockResponseDTO> addStock(@RequestBody StockRequestDTO stockRequestDTO) {
         StockResponseDTO stockResponseDTO = stockService.addStock(stockRequestDTO);
         return ResponseEntity.ok(stockResponseDTO);
     }
+
     @DeleteMapping("/{stockId}/deleteStock")
-    public void deleteStock(@PathVariable Long stockId)
-    {
+    public void deleteStock(@PathVariable Long stockId) {
         stockService.deleteStockById(stockId);
     }
 
     @PostMapping("/consume")
-    public ResponseEntity<List<StockConsumeResponseDTO>> consumeStock(
-           @RequestBody StockConsumeRequestDTO stockConsumeRequestDTO
-    ) {
+    public ResponseEntity<List<StockConsumeResponseDTO>> consumeStock(@RequestBody StockConsumeRequestDTO stockConsumeRequestDTO) {
         List<StockConsumeResponseDTO> result = stockService.consumeStock(stockConsumeRequestDTO);
         return ResponseEntity.ok(result);
     }

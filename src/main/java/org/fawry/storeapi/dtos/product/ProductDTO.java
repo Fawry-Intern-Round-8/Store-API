@@ -2,8 +2,6 @@ package org.fawry.storeapi.dtos.product;
 
 import lombok.*;
 
-import java.util.Date;
-
 @Data
 @Getter
 @NoArgsConstructor

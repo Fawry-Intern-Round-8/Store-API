@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 @Service
 public class ProductClientServiceImpl implements ProductClientService {
     private final RestTemplate restTemplate = new RestTemplate();
-    private final String PRODUCT_API_BASE_URL = "http://localhost:8081/api/products";
+    private final String PRODUCT_API_BASE_URL = "http://localhost:8084/api/products";
 
     private final StockService stockService;
 

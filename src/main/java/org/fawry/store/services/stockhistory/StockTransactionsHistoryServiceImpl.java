@@ -1,6 +1,5 @@
 package org.fawry.store.services.stockhistory;
 
-import org.fawry.store.dtos.store.StoreResponseDTO;
 import org.fawry.store.dtos.transactionshistory.TransactionsHistoryDTO;
 import org.fawry.store.entities.StockTransactionsHistory;
 import org.fawry.store.entities.Store;
@@ -10,8 +9,7 @@ import org.fawry.store.repositories.StockTransactionsHistoryRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
+
 
 @Service
 public class StockTransactionsHistoryServiceImpl implements StockTransactionsHistoryService {

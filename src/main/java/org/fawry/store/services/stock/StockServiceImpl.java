@@ -39,8 +39,10 @@ public class StockServiceImpl implements StockService{
     }
 
     public Long isProductAvailable(Long productId, int quantity) {
-        System.out.println(stockRepository.isProductAvailableAcrossStores(productId, quantity));
-        return stockRepository.isProductAvailableAcrossStores(productId, quantity);
+
+        if( stockRepository.getTotalProductQuantity(productId) >= quantity) {
+            return 1L;
+        } else return 0L;
     }
 
     @Override
@@ -71,8 +73,6 @@ public class StockServiceImpl implements StockService{
                 return mapToStockResponseDTO(updatedStock);
             }
         }
-
-
         Stock newStock = new Stock();
         newStock.setStore(store);
         newStock.setProductId(productId);
@@ -126,8 +126,8 @@ public class StockServiceImpl implements StockService{
         String customerEmail =stockConsumeRequestDTO.getCustomerEmail();
         double longitude = stockConsumeRequestDTO.getLongitude();
         double latitude = stockConsumeRequestDTO.getLatitude();
-        Long result = stockRepository.isProductAvailableAcrossStores(productId, quantity);
-        boolean isAvailableQuantity = result != null && result > 0;
+        Long totalProductQuantity = stockRepository.getTotalProductQuantity(productId);
+        boolean isAvailableQuantity = totalProductQuantity > quantity;
         if (!isAvailableQuantity) {
             throw new StockNotFountException("Not enough stock available");
         }
@@ -168,6 +168,11 @@ public class StockServiceImpl implements StockService{
         // TODO: Should pass to notifications api
 
         return consumptionReport;
+    }
+
+    @Override
+    public Long getTotalProductQuantity( Long productId){
+        return stockRepository.getTotalProductQuantity(productId);
     }
 
 

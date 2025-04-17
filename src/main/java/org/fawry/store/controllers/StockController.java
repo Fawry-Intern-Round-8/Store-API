@@ -28,6 +28,14 @@ public class StockController {
         return ResponseEntity.ok(isAvailable);
     }
 
+    @GetMapping("/getAllStocks")
+    public ResponseEntity<List<StockResponseDTO>> getAllStocks(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        List<StockResponseDTO> stocks = stockService.getAllStocks(page, size);
+        return ResponseEntity.ok(stocks);
+    }
+
     @PostMapping("/createStock")
     public ResponseEntity<StockResponseDTO> createStock(
             @RequestBody StockRequestDTO stockRequestDTO){

@@ -199,4 +199,18 @@ public class StockServiceImpl implements StockService{
         return stockRepository.findStoreByStockId(stockId);
     }
 
+    @Override
+    public List<StockResponseDTO> getAllStocks(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<Stock> stocks = stockRepository.findAll(pageable).getContent();
+        List<StockResponseDTO> stockResponseDTOs = new ArrayList<>();
+
+        for (Stock stock : stocks) {
+            StockResponseDTO stockResponseDTO = mapToStockResponseDTO(stock);
+            stockResponseDTOs.add(stockResponseDTO);
+        }
+
+        return stockResponseDTOs;
+    }
+
 }

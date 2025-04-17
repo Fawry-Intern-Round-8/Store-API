@@ -17,6 +17,7 @@ import org.fawry.storeapi.services.client.ProductClientService;
 import org.fawry.storeapi.services.stockhistory.StockTransactionsHistoryService;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
@@ -73,8 +74,6 @@ public class StockServiceImpl implements StockService{
                 return mapToStockResponseDTO(updatedStock);
             }
         }
-
-
         Stock newStock = new Stock();
         newStock.setStore(store);
         newStock.setProductId(productId);
@@ -170,6 +169,11 @@ public class StockServiceImpl implements StockService{
         // TODO: Should pass to notifications api
 
         return consumptionReport;
+    }
+
+    @Override
+    public Long getTotalProductQuantity( Long productId){
+        return stockRepository.getTotalProductQuantity(productId);
     }
 
 

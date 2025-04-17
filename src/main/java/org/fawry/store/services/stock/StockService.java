@@ -1,10 +1,11 @@
-package org.fawry.storeapi.services.stock;
+package org.fawry.store.services.stock;
 
-import org.fawry.storeapi.dtos.stock.StockConsumeRequestDTO;
-import org.fawry.storeapi.dtos.stock.StockConsumeResponseDTO;
-import org.fawry.storeapi.dtos.stock.StockRequestDTO;
-import org.fawry.storeapi.dtos.stock.StockResponseDTO;
-import org.fawry.storeapi.entities.Store;
+
+import org.fawry.store.dtos.stock.StockConsumeRequestDTO;
+import org.fawry.store.dtos.stock.StockConsumeResponseDTO;
+import org.fawry.store.dtos.stock.StockRequestDTO;
+import org.fawry.store.dtos.stock.StockResponseDTO;
+import org.fawry.store.entities.Store;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;

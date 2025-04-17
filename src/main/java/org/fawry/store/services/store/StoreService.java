@@ -3,6 +3,7 @@ package org.fawry.store.services.store;
 import org.fawry.store.dtos.stock.StockDTO;
 import org.fawry.store.dtos.store.StoreDTO;
 import org.fawry.store.dtos.store.StoreResponseDTO;
+
 import java.util.List;
 
 public interface StoreService {

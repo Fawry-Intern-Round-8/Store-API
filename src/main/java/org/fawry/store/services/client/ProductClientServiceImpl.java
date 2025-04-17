@@ -1,9 +1,9 @@
 package org.fawry.store.services.client;
 
+import org.fawry.store.services.stock.StockService;
 import org.fawry.storeapi.dtos.product.ProductDTO;
-import org.fawry.storeapi.services.stock.StockService;
-import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;

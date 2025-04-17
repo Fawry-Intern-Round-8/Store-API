@@ -1,13 +1,12 @@
-package org.fawry.storeapi.controllers;
+package org.fawry.store.controllers;
 
-
+import org.fawry.store.dtos.stock.StockConsumeRequestDTO;
+import org.fawry.store.dtos.stock.StockConsumeResponseDTO;
+import org.fawry.store.dtos.stock.StockRequestDTO;
+import org.fawry.store.dtos.stock.StockResponseDTO;
+import org.fawry.store.services.client.ProductClientService;
+import org.fawry.store.services.stock.StockService;
 import org.fawry.storeapi.dtos.product.ProductDTO;
-import org.fawry.storeapi.dtos.stock.StockConsumeRequestDTO;
-import org.fawry.storeapi.dtos.stock.StockConsumeResponseDTO;
-import org.fawry.storeapi.dtos.stock.StockRequestDTO;
-import org.fawry.storeapi.dtos.stock.StockResponseDTO;
-import org.fawry.storeapi.services.client.ProductClientService;
-import org.fawry.storeapi.services.stock.StockService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
